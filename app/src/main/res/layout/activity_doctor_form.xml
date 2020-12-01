@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:scrollbars="vertical"
+    tools:context=".activities.DoctorFormActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+        <include layout="@layout/stepper" />
+
+        <RelativeLayout
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/profile_imageView"
+                android:layout_width="@dimen/toolbar_profile_width"
+                android:layout_height="@dimen/toolbar_profile_width"
+                android:layout_marginTop="@dimen/activity_padding"
+                android:layout_marginBottom="@dimen/activity_padding"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_user"
+                app:civ_border_color="@android:color/white"
+                app:civ_border_width="2dp" />
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/img_plus"
+                android:layout_width="@dimen/ic_plus_width"
+                android:layout_height="@dimen/ic_plus_width"
+                android:layout_alignBottom="@id/profile_imageView"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_plus"
+                app:civ_shadow="true"
+                app:civ_shadow_radius="1" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/doctorNameInL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="20dp"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/doctorNameEt"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/name"
+                    android:inputType="textPersonName"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/doctorEmailInL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginBottom="20dp"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/doctorEmailEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/doctorPhoneInL"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/doctorPhoneEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/phone_number"
+                    android:inputType="phone"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/doctorAgeInL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:focusable="false"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/doctorAgeEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:hint="@string/birthdate"
+                    android:inputType="date"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/doctorGenderInL"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:errorEnabled="true">
+
+                <RadioGroup
+                    android:id="@+id/doctor_gender_radio_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/are_you_a_">
+
+                    <RadioButton
+                        android:id="@+id/radio_button_male"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/male" />
+
+                    <RadioButton
+                        android:id="@+id/radio_button_female"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/female" />
+                </RadioGroup>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:visibility="invisible" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/doctorBioInl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:hint="@string/doctor_bio"
+                android:inputType="text"
+                android:maxLines="5"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addTaskNameTl">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/doctorBioEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:gravity="start|top"
+                    android:inputType="textMultiLine"
+                    android:maxLines="3"
+
+                    tools:layout_editor_absoluteX="193dp"
+                    tools:layout_editor_absoluteY="143dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/specialityInl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:focusable="false"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/specialityEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:hint="@string/speciality"
+                    android:inputType="text"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/idInl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:focusable="false"
+                app:errorEnabled="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/idEt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:focusable="false"
+                        android:hint="@string/id_photo"
+                        android:inputType="text"
+                        android:maxLines="1" />
+                    <Button
+                        android:id="@+id/chooseIDBt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/secondColorAccent"
+                        android:text="@string/choose_image"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/licenseInl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:focusable="false"
+                app:errorEnabled="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/licenseEt"
+
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:focusable="false"
+                        android:hint="@string/license"
+                        android:inputType="text"
+
+                        android:maxLines="1" />
+                    <Button
+                        android:id="@+id/chooseLicenseBt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/secondColorAccent"
+                        android:text="@string/choose_image"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <Button
+                android:id="@+id/chooseLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/secondColorAccent"
+                android:text="choose location"
+                android:textColor="@color/white" />
+            <Button
+                android:id="@+id/adddoctorInfoBt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/secondColorAccent"
+                android:text="@string/confirm"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+</ScrollView>
+

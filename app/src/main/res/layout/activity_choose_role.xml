@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.ChooseRoleActivity"
+    >
+    <include layout="@layout/stepper" />
+    <TextView
+        android:id="@+id/welcome_to_"
+        android:layout_width="287dp"
+        android:layout_height="59dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="72dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="@string/welcome_to_"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/app_name"
+        android:layout_width="215dp"
+        android:layout_height="30dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="@string/app_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcome_to_" />
+
+    <TextView
+        android:id="@+id/are_you_a_"
+        android:layout_width="310dp"
+        android:layout_height="58dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="36dp"
+        android:gravity="center_horizontal|top"
+        android:text="@string/are_you_a_"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_name" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/splash_background" />
+
+
+
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/are_you_a_">
+
+        <RadioButton
+            android:id="@+id/radio_button_doctor"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/doctor" />
+
+        <RadioButton
+            android:id="@+id/radio_button_client"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/client" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/choose_role_bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:background="@color/colorAccent"
+        android:text="@string/continue_"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radio_group" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
