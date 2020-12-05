@@ -1,6 +1,7 @@
 package com.heshmat.doctoreta.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -14,12 +15,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -32,6 +37,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -41,6 +47,9 @@ import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -50,9 +59,12 @@ import com.heshmat.doctoreta.DatabaseInstance;
 import com.heshmat.doctoreta.LoadingDialog;
 import com.heshmat.doctoreta.R;
 import com.heshmat.doctoreta.adapters.SpecialityDialog;
+import com.heshmat.doctoreta.models.AddressInfo;
 import com.heshmat.doctoreta.models.Doctor;
+import com.heshmat.doctoreta.models.StaticFields;
 import com.heshmat.doctoreta.utils.ChoosePhoto;
 import com.heshmat.doctoreta.utils.FormattingDate;
+import com.heshmat.doctoreta.utils.RequestPermissions;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -60,12 +72,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.heshmat.doctoreta.models.StaticFields.DOCTORS;
 import static com.heshmat.doctoreta.models.StaticFields.FEMALE;
 import static com.heshmat.doctoreta.models.StaticFields.MALE;
 import static com.heshmat.doctoreta.models.StaticFields.UNVERIFIED_DOCTORS;
+import static com.heshmat.doctoreta.models.StaticFields.USED_PHONES;
 import static com.heshmat.doctoreta.utils.FormattingDate.getAge;
 import static com.heshmat.doctoreta.utils.RequestPermissions.requestMultiplePermissions;
 
@@ -93,11 +110,14 @@ public class DoctorFormActivity extends AppCompatActivity {
     TextInputLayout licenseInl;
     @BindView(R.id.licenseEt)
     TextInputEditText licenseEt;
-
     @BindView(R.id.doctorBioInl)
     TextInputLayout doctorBioInl;
-
-
+    @BindView(R.id.locationInl)
+    TextInputLayout locationInl;
+    @BindView(R.id.locationEt)
+    TextInputEditText locationEt;
+    @BindView(R.id.feeInl)
+    TextInputLayout feeInl;
     @BindView(R.id.doctor_gender_radio_group)
     RadioGroup doctorGenderRadioGroup;
     @BindView(R.id.profile_imageView)
@@ -107,8 +127,8 @@ public class DoctorFormActivity extends AppCompatActivity {
     LoadingDialog loadingDialog;
     DatePickerDialog picker;
     Calendar ageCalender;
-
-
+    Geocoder geocoder;
+    AddressInfo addressInfo;
     long age = -1;
     String gender = "";
 
@@ -127,6 +147,11 @@ public class DoctorFormActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        if (getActionBar() != null)
+            getActionBar().hide();
         setContentView(R.layout.activity_doctor_form);
         ButterKnife.bind(this);
         context = this;
@@ -201,6 +226,32 @@ public class DoctorFormActivity extends AppCompatActivity {
         doctorNameInL.setError(null);
         return true;
     }
+    private boolean validateFees() {
+        String fee = feeInl.getEditText().getText().toString();
+        if (fee.isEmpty()) {
+            feeInl.setError(getString(R.string.required_field));
+            return false;
+        }
+        else if (!isaNumber(fee) && Double.parseDouble(fee)<0){
+            feeInl.setError(getString(R.string.required_field));
+            return false;
+        }
+        feeInl.setError(null);
+
+        return true;
+    }
+    private boolean isaNumber(String strNum){
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+
+    }
 
     private boolean validateEmail() {
         String email = doctorEmailInL.getEditText().getText().toString();
@@ -234,6 +285,7 @@ public class DoctorFormActivity extends AppCompatActivity {
 
         return true;
     }
+
 
     private boolean validateGender() {
         int id = doctorGenderRadioGroup.getCheckedRadioButtonId();
@@ -306,10 +358,20 @@ public class DoctorFormActivity extends AppCompatActivity {
     private boolean validateLicImg() {
         String licurl = Objects.requireNonNull(licenseEt.getText()).toString();
         if (licurl.isEmpty()) {
-            licenseEt.setError(getString(R.string.required_field));
+            licenseInl.setError(getString(R.string.required_field));
             return false;
         }
-        licenseEt.setError(null);
+        licenseInl.setError(null);
+
+        return true;
+    }
+    private boolean validateAddress() {
+        String locationAddress = Objects.requireNonNull(locationEt.getText()).toString();
+        if (locationAddress.isEmpty()) {
+            locationInl.setError(getString(R.string.required_field));
+            return false;
+        }
+        locationInl.setError(null);
 
         return true;
     }
@@ -324,9 +386,11 @@ public class DoctorFormActivity extends AppCompatActivity {
         validateSpeciality();
         validateIdImg();
         validateLicImg();
+        validateFees();
+        validateAddress();
 
         return validateProfileImg() && validateName() && validateEmail() && validatePhone() && validateAge() &&
-                validateGender() && validateBio() && validateSpeciality() && validateIdImg() && validateLicImg();
+                validateGender() && validateBio() && validateSpeciality() && validateIdImg() && validateLicImg()&&validateAddress()&& validateFees();
     }
 
     @OnClick(R.id.licenseEt)
@@ -359,21 +423,25 @@ public class DoctorFormActivity extends AppCompatActivity {
         }
 
     }
-
+    Address doctorAddressInLocalLang;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==PLACE_PICKER_REQUEST){
-            if (resultCode == AutocompleteActivity.RESULT_OK) {
-                Place place = Autocomplete.getPlaceFromIntent(data);
-                Toast.makeText(context, place.getAddress()+" "+place.getName()+" "+" "+place.getLatLng(), Toast.LENGTH_SHORT).show();
-//                 place.getName();
-//                 place.getAddress();
-            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-                Status status = Autocomplete.getStatusFromIntent(intent);
-            } else if (resultCode == AutocompleteActivity.RESULT_CANCELED) {
-                // The user canceled the operation.
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                LatLng latLng = data.getParcelableExtra("latLng");
+                 addressInfo = data.getParcelableExtra("addressInfo");
+
+                if (latLng != null) {
+                     doctorAddressInLocalLang = getAddress(latLng);
+                    if (doctorAddressInLocalLang != null && doctorAddressInLocalLang.getMaxAddressLineIndex() > -1)
+                        locationEt.setText(doctorAddressInLocalLang.getAddressLine(0));
+                }
+
+
+            } else {
+
             }
         }
         if (resultCode == this.RESULT_CANCELED) {
@@ -437,35 +505,68 @@ public class DoctorFormActivity extends AppCompatActivity {
 
     @OnClick(R.id.adddoctorInfoBt)
     public void addInfo(View view) {
-        if (validation() && Doctor.currentLoggedDoctor != null) {
+        if (validation() && Doctor.currentLoggedDoctor != null&& addressInfo!=null) {
             String name = doctorNameInL.getEditText().getText().toString();
             String phone = doctorPhoneInL.getEditText().getText().toString();
             String email = doctorEmailInL.getEditText().getText().toString();
             String bio = doctorBioInl.getEditText().getText().toString();
             String speciality = specialityInl.getEditText().getText().toString();
+            double fee=Integer.parseInt(feeInl.getEditText().getText().toString());
             gender = doctorGenderRadioGroup.getCheckedRadioButtonId() == R.id.radio_button_female ? FEMALE : MALE;
 
             Doctor.currentLoggedDoctor.setName(name);
             Doctor.currentLoggedDoctor.setPhoneNumber(phone);
             Doctor.currentLoggedDoctor.setEmail(email);
             Doctor.currentLoggedDoctor.setBio(bio);
+            Doctor.currentLoggedDoctor.setAddressInfo(addressInfo);
             Doctor.currentLoggedDoctor.setPhoneNumber(phone);
             Doctor.currentLoggedDoctor.setBirthDate(age);
             Doctor.currentLoggedDoctor.setGender(gender);
             Doctor.currentLoggedDoctor.setSpeciality(speciality);
+            Doctor.currentLoggedDoctor.setIsVerified(false);
+            Doctor.currentLoggedDoctor.setStatus(StaticFields.IN_PROGRESS);
+            Doctor.currentLoggedDoctor.setPrice(fee);
 
-            for (int i = 0; i < imagesUri.size(); i++) {
-                uploadImages(Doctor.currentLoggedDoctor.getId(), imagesUri, i);
-            }
+            checkIfPhoneAlreadyUsed(phone,Doctor.currentLoggedDoctor.getId());
+
+
 
 
         }
 
 
-    }
 
+
+
+    }
+    private void checkIfPhoneAlreadyUsed(String phoneNum, String id) {
+
+        DatabaseInstance.getInstance().collection(USED_PHONES).document(phoneNum).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                if (value != null && value.exists() && !Objects.equals(value.get(phoneNum, String.class), id)) {
+                    new AlertDialog.Builder(context).setMessage(getString(R.string.phone_exist)).setPositiveButton(getString(R.string.ok), null).show();
+
+                } else {
+                    Map<String, String> map = new HashMap<String, String>();
+                    map.put(phoneNum, id);
+                    DatabaseInstance.getInstance().collection(USED_PHONES).document(phoneNum).set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            for (int i = 0; i < imagesUri.size(); i++) {
+                                uploadImages(Doctor.currentLoggedDoctor.getId(), imagesUri, i);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
     @OnClick(R.id.chooseLocation)
     public void chooseLocation(View view) {
+        if (RequestPermissions.requestLocationPermission(this))
+            startActivityForResult(new Intent(this, MapsActivity.class), PLACE_PICKER_REQUEST);
 
 
     }
@@ -523,6 +624,34 @@ public class DoctorFormActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    Address getAddress(LatLng latLng) throws NullPointerException {
+        Address address;
+        geocoder = new Geocoder(this, Locale.getDefault());
+
+        try {
+            List<Address> latadd = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            if (latadd != null && latadd.size() > 0) {
+                address = latadd.get(0);
+                String country = "country: " + address.getCountryName();
+                String countryCode = "code: " + address.getCountryCode();
+                String locality = "locality: " + address.getLocality();
+                String adminArea = "adminArea: " + address.getAdminArea();
+                String add = "address: " + address.getAddressLine(0);
+                String featureADdress = address.getFeatureName();
+
+
+            } else {
+                address = null;
+            }
+        } catch (IOException e) {
+            loadingDialog.dismissDialog();
+            e.printStackTrace();
+            address = null;
+
+        }
+        return address;
     }
 
 }

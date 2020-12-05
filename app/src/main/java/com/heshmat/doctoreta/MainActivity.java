@@ -30,6 +30,7 @@ import com.heshmat.doctoreta.models.Doctor;
 import com.heshmat.doctoreta.models.Patient;
 import com.heshmat.doctoreta.models.StaticFields;
 import com.heshmat.doctoreta.models.User;
+import com.heshmat.doctoreta.utils.FakeDoctors;
 
 import static com.heshmat.doctoreta.models.StaticFields.CLIENTS;
 import static com.heshmat.doctoreta.models.StaticFields.UNVERIFIED_DOCTORS;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         if (getActionBar() != null)
             getActionBar().hide();
         setContentView(R.layout.activity_main);
+   //     FakeDoctors.main();
         context = this;
         animatedLogo();
         new Handler().postDelayed(new Runnable() {
@@ -73,13 +75,13 @@ public class MainActivity extends AppCompatActivity {
 
                                     /*Todo:check doctor collections */
 
-                                } else if (role.equals(StaticFields.PATIENT_ROLE)) {
+                                }
+                                else if (role.equals(StaticFields.PATIENT_ROLE)) {
                                     /*Todo:check patient collections */
                                     patientRedirect(user.getUid(), user);
 
-                                } /*else if (role.equals(StaticFields.UNVERIFIED_DOCTOR_ROLE)) {
-                                    unverifiedDoctorRedirect(user.getUid(), user);
-                                } */else {
+                                }
+                                else {
                                     startActivity(user.getUid(), ChooseRoleActivity.class);
                                     //   startActivity(new Intent(context, ChooseRoleActivity.class));
                                     //todo: redirect to signinup activity
@@ -87,7 +89,8 @@ public class MainActivity extends AppCompatActivity {
                                 }
 
 
-                            } else {
+                            }
+                            else { //user didnt choose a role
                                 startActivity(user.getUid(), ChooseRoleActivity.class);
                                 // User is signed out, send to SignInUpActivity
                                 //  startActivity(new Intent(MainActivity.this, ChooseRoleActivity.class));
@@ -97,7 +100,8 @@ public class MainActivity extends AppCompatActivity {
                     });
 
 
-                } else {
+                }
+                else {// firebase user is null
                     // User is signed out, send to SignInUpActivity
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     finish();
@@ -156,32 +160,28 @@ public class MainActivity extends AppCompatActivity {
                 if (documentSnapshot != null && documentSnapshot.exists()) {
 
 
-                    if (documentSnapshot.contains("name") && documentSnapshot.contains("phoneNumber") && documentSnapshot.contains("email")
-                    ) {
-                        String name = documentSnapshot.get("name", String.class);
-                        String phoneNumber = documentSnapshot.get("phoneNumber", String.class);
-                        String email = documentSnapshot.get("email", String.class);
+                    if (documentSnapshot.contains("name") && documentSnapshot.contains("phoneNumber") && documentSnapshot.contains("email")) {
+
                         User.currentLoggedUser = documentSnapshot.toObject(Patient.class);
                         // new Patient(id, name, phoneNumber, email);
                         startActivity(new Intent(context, HomeActivity.class));
                         finish();
 
-                    } else {
+                    }
+                    else {
                         String email = user.getEmail();
                         String name = user.getDisplayName();
                         String phone = user.getPhoneNumber();
                         User.currentLoggedUser = new Patient(id, name, phone, email);
                         startActivity(id, PatientFormActivity.class);
-
-                        //   startActivity(new Intent(context, PatientFormActivity.class));
-                        // finish();
-
                     }
-                } else {
-                    Intent intent = new Intent(context, LoginActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-                    finish();
+                }
+                else {
+                    String email = user.getEmail();
+                    String name = user.getDisplayName();
+                    String phone = user.getPhoneNumber();
+                    User.currentLoggedUser = new Patient(id, name, phone, email);
+                    startActivity(id, PatientFormActivity.class);
                 }
             }
 
@@ -253,10 +253,11 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 } else {
-                    Intent intent = new Intent(context, LoginActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-                    finish();
+                    String email = user.getEmail();
+                    String name = user.getDisplayName();
+                    String phone = user.getPhoneNumber();
+                    Doctor.currentLoggedDoctor = new Doctor(id, name, phone, email);
+                    startActivity(id, DoctorFormActivity.class);
                 }
             }
 

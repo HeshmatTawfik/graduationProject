@@ -105,6 +105,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/phone_number"
                     android:inputType="phone"
+                    android:digits="0123456789"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -213,6 +214,24 @@
                     android:inputType="text"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/feeInl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/feesEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/fee"
+                    android:inputType="number"
+                    android:digits="0123456789"
+
+
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -285,13 +304,44 @@
                 </LinearLayout>
 
             </com.google.android.material.textfield.TextInputLayout>
-            <Button
-                android:id="@+id/chooseLocation"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/locationInl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/secondColorAccent"
-                android:text="choose location"
-                android:textColor="@color/white" />
+                android:layout_marginBottom="20dp"
+                android:focusable="false"
+                app:errorEnabled="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/locationEt"
+
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:focusable="false"
+                        android:hint="@string/address"
+                        android:inputType="text"
+
+                        android:maxLines="1" />
+                    <Button
+                        android:id="@+id/chooseLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/secondColorAccent"
+                        android:text="@string/choose_image"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
             <Button
                 android:id="@+id/adddoctorInfoBt"
                 android:layout_width="match_parent"

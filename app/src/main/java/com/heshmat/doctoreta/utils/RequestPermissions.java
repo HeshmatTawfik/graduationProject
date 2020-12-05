@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.heshmat.doctoreta.R;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -55,11 +56,56 @@ public class RequestPermissions {
                 withErrorListener(new PermissionRequestErrorListener() {
                     @Override
                     public void onError(DexterError error) {
-                  //      Toast.makeText(getApplicationContext(), "Some Error! ", Toast.LENGTH_SHORT).show();
+                        //      Toast.makeText(getApplicationContext(), "Some Error! ", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .onSameThread()
                 .check();
+    }
+
+    public static boolean requestLocationPermission(Activity activity) {
+        final boolean[] isAllChecked = {false};
+        Dexter.withActivity(activity)
+                .withPermissions(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.INTERNET,
+                        Manifest.permission.ACCESS_NETWORK_STATE,
+                        Manifest.permission.ACCESS_WIFI_STATE)
+                .withListener(
+                        new MultiplePermissionsListener() {
+                            @Override
+                            public void onPermissionsChecked(MultiplePermissionsReport report) {
+                                // check if all permissions are granted
+                                if (report.areAllPermissionsGranted()) {
+                                    isAllChecked[0] = true;
+
+                                }
+
+//                      check for permanent denial of any permission
+                                if (report.isAnyPermissionPermanentlyDenied()) {
+                                    isAllChecked[0] = false;
+                                    Toast.makeText(getApplicationContext(), activity.getString(R.string.required_permission), Toast.LENGTH_SHORT).show();                                    // show alert dialog navigating to Settings
+                                    requestLocationPermission(activity);
+                                }
+                            }
+
+                            @Override
+                            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions,
+                                                                           PermissionToken token) {
+                                token.continuePermissionRequest();
+                            }
+                        }).
+                withErrorListener(new PermissionRequestErrorListener() {
+                    @Override
+                    public void onError(DexterError error) {
+                        isAllChecked[0] = false;
+                        //      Toast.makeText(getApplicationContext(), "Some Error! ", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .onSameThread()
+                .check();
+        return isAllChecked[0];
     }
 
 }
