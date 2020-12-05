@@ -22,7 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.heshmat.doctoreta.activities.ChooseRoleActivity;
 import com.heshmat.doctoreta.activities.DoctorFormActivity;
 import com.heshmat.doctoreta.activities.DoctorHomeActivity;
-import com.heshmat.doctoreta.activities.HomeActivity;
+import com.heshmat.doctoreta.patientui.HomeActivity;
 import com.heshmat.doctoreta.activities.LoginActivity;
 import com.heshmat.doctoreta.activities.PatientFormActivity;
 import com.heshmat.doctoreta.activities.UnverifiedDoctorActivity;
@@ -30,7 +30,6 @@ import com.heshmat.doctoreta.models.Doctor;
 import com.heshmat.doctoreta.models.Patient;
 import com.heshmat.doctoreta.models.StaticFields;
 import com.heshmat.doctoreta.models.User;
-import com.heshmat.doctoreta.utils.FakeDoctors;
 
 import static com.heshmat.doctoreta.models.StaticFields.CLIENTS;
 import static com.heshmat.doctoreta.models.StaticFields.UNVERIFIED_DOCTORS;

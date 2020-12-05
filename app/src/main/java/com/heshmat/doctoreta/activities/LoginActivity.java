@@ -49,6 +49,7 @@ import com.heshmat.doctoreta.models.Doctor;
 import com.heshmat.doctoreta.models.Patient;
 import com.heshmat.doctoreta.models.StaticFields;
 import com.heshmat.doctoreta.models.User;
+import com.heshmat.doctoreta.patientui.HomeActivity;
 
 import java.util.Objects;
 
