@@ -12,11 +12,10 @@ public class StaticFields {
     public static final String FEMALE="Female";
     public static final String USED_PHONES="phoneNumbers";
     public static final String USED_EMAILS="phoneNumbers";
-
-
     public static final String ACCEPTED ="ACCEPTED" ;
     public static final String IN_PROGRESS ="IN_PROGRESS" ;
     public static final String REJECTED ="REJECTED" ;
+    public static final int LIMIT=5;
 
 
 }

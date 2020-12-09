@@ -1,5 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<androidx.cardview.widget.CardView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/projectCV"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+   android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    app:cardCornerRadius="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-</RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:background="#EFE6E6">
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/doctorCardIv"
+                android:layout_width="@dimen/toolbar_profile_width"
+                android:layout_height="@dimen/toolbar_profile_width"
+                android:layout_marginTop="@dimen/activity_padding"
+                android:layout_marginBottom="@dimen/activity_padding"
+                android:scaleType="centerInside"
+                android:layout_marginStart="10dp"
+
+                android:src="@drawable/ic_user"
+                app:civ_border_color="@android:color/white"
+                app:civ_border_width="2dp" />
+
+            <TextView
+                android:id="@+id/doctorNameCardTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="32dp"
+                android:layout_toEndOf="@id/doctorCardIv"
+                android:text="Heshmat Tawfik"
+                android:textColor="@color/secondColorAccent"
+                android:textStyle="bold" />
+
+
+            <RatingBar
+                android:id="@+id/doctorCardRatingBar"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/doctorNameCardTv"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/doctorCardIv"
+                android:numStars="5"
+                android:progressTint="#FFD700"
+                android:rating="3.5" />
+
+            <TextView
+                android:id="@+id/doctorCardOverallTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/doctorCardRatingBar"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@id/doctorCardIv"
+                android:text="Overall rating from 100 clients"
+                android:textSize="10sp" />
+
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="10dp"
+            android:layout_marginStart="10dp"
+            android:paddingBottom="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:paddingTop="1dp">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_stethoscope"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:id="@+id/doctorCardSpecialityTv"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="Psychiatry (Mental, Emotional or Behavioral Disorders)"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:maxLines="1"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="1dp">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_location"/>
+                <TextView
+                    android:id="@+id/doctorCardLocationTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="Velyka Vasylkivska St, 63Ð‘, Kyiv, Ukraine, 02000"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginBottom="5dp"
+
+                android:layout_height="wrap_content"
+                android:paddingTop="1dp">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_money"/>
+                <TextView
+                    android:id="@+id/doctorCardFeesTv"
+
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="300"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView >

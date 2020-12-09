@@ -26,7 +26,7 @@
         android:layout_height="30dp"
         android:layout_marginTop="4dp"
         android:gravity="center_horizontal|center_vertical"
-        android:text="@string/app_name"
+        android:text=" Telemedicine"
         android:textColor="@color/colorPrimary"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"

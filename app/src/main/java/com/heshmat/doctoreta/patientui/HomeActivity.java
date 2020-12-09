@@ -24,14 +24,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.heshmat.doctoreta.DatabaseInstance;
+import com.heshmat.doctoreta.MainActivity;
 import com.heshmat.doctoreta.R;
 import com.heshmat.doctoreta.activities.LoginActivity;
+import com.heshmat.doctoreta.models.Doctor;
 import com.heshmat.doctoreta.models.Patient;
 import com.heshmat.doctoreta.models.User;
 import com.heshmat.doctoreta.utils.CircleTransform;
@@ -65,6 +70,7 @@ public class HomeActivity extends AppCompatActivity implements
         activity = this;
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+
 
         navigationView.setNavigationItemSelectedListener(this);
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
@@ -124,14 +130,11 @@ public class HomeActivity extends AppCompatActivity implements
 
 
             case R.id.logoutMenuItem:
-                FirebaseAuth.getInstance().signOut();
-                LoginManager.getInstance().logOut();
-                User.currentLoggedUser = null;
+                //FirebaseAuth.getInstance().signOut();
+                //LoginManager.getInstance().logOut();
+                //User.currentLoggedUser = null;
                 Disconnect_google();
-                Intent intent = new Intent(this, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
+
                 break;
         }
         closeDrawer();
@@ -169,7 +172,9 @@ public class HomeActivity extends AppCompatActivity implements
                 drawerUserEmailTv.setText(User.currentLoggedUser.getEmail());
             if (User.currentLoggedUser.getPhotoURL() != null) {
 
-                Picasso.with(getApplicationContext()).load(User.currentLoggedUser.getPhotoURL()).transform(new CircleTransform()).into(userIv);
+
+                Picasso.with(getApplicationContext()).load(User.currentLoggedUser.getPhotoURL()).transform(new CircleTransform())
+                        .error(R.drawable.color_cursor).into(userIv);
             }
         }
     }
@@ -186,6 +191,21 @@ public class HomeActivity extends AppCompatActivity implements
     }
 
     public void Disconnect_google() {
+        AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        User.currentLoggedUser=null;
+                        Doctor.currentLoggedDoctor=null;
+                        Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();                    }
+                });
+       /* GoogleSignInOptions  gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
         GoogleSignInClient mGoogleApiClient = GoogleSignIn.getClient(this, gso);
 
         try {
@@ -205,6 +225,6 @@ public class HomeActivity extends AppCompatActivity implements
                         });
             }
         } catch (Exception e) {
-        }
+        }*/
     }
 }

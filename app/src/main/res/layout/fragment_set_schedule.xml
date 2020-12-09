@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".doctorui.SetScheduleFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- all the days of the week-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/working_days"/>
+            <!--Monday-->
+            <LinearLayout style="@style/day_vertical_linear_layout">
+
+                <LinearLayout style="@style/day_horizontal_linear_layout">
+                    <TextView
+                        style="@style/work_time_swtich"
+                        android:text="@string/monday" />
+                    <Switch
+                        android:id="@+id/switchMonday"
+                        style="@style/work_time_swtich" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/startAtMondayInL"
+                            style="@style/non_focusable_text_input_layout">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/startAtMondayEt"
+                                style="@style/non_focusable_text_edit_text"
+                                android:hint="@string/startAt" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/endAMondayInL"
+                            style="@style/non_focusable_text_input_layout">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/endAtMondayEt"
+                                style="@style/non_focusable_text_edit_text"
+                                android:hint="@string/endAt" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/sessionTimeMondayInL"
+                        style="@style/focusable_text_input_layout">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/sessionMondayTimeEt"
+                            style="@style/focusable_text_edit_text"
+                            android:hint="@string/session_duration"
+                            android:inputType="numberDecimal" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+            <!--Tuesday-->
+            <LinearLayout style="@style/day_vertical_linear_layout">
+
+                <LinearLayout style="@style/day_horizontal_linear_layout">
+                    <TextView
+                        style="@style/work_time_swtich"
+                        android:text="@string/tuesday" />
+                    <Switch
+                        android:id="@+id/switchTuesday"
+                        style="@style/work_time_swtich" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/startAtTuesdayInL"
+                            style="@style/non_focusable_text_input_layout">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/startAtTuesdayEt"
+                                style="@style/non_focusable_text_edit_text"
+                                android:hint="@string/startAt" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/endATuesdayInL"
+                            style="@style/non_focusable_text_input_layout">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/endAtTuesdayEt"
+                                style="@style/non_focusable_text_edit_text"
+                                android:hint="@string/endAt" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/sessionTimeTuesdayInL"
+                        style="@style/focusable_text_input_layout">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/sessionTuesdayTimeEt"
+                            style="@style/focusable_text_edit_text"
+                            android:hint="@string/session_duration"
+                            android:inputType="numberDecimal" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!--Wednesday-->
+            <LinearLayout style="@style/day_vertical_linear_layout">
+
+                <LinearLayout style="@style/day_horizontal_linear_layout">
+                    <TextView
+                        style="@style/work_time_swtich"
+                        android:text="@string/wednesday" />
+                    <Switch
+                        android:id="@+id/switchWednesday"
+                        style="@style/work_time_swtich" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/startAtWednesdayInL"
+                            style="@style/non_focusable_text_input_layout">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/startAtWednesdayEt"
+                                style="@style/non_focusable_text_edit_text"
+                                android:hint="@string/startAt" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/endAWednesdayInL"
+                            style="@style/non_focusable_text_input_layout">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/endAtWednesdayEt"
+                                style="@style/non_focusable_text_edit_text"
+                                android:hint="@string/endAt" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/sessionTimeWednesdayInL"
+                        style="@style/focusable_text_input_layout">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/sessionWednesdayTimeEt"
+                            style="@style/focusable_text_edit_text"
+                            android:hint="@string/session_duration"
+                            android:inputType="numberDecimal" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+            <!--Wednesday-->
+            <!--Thursday-->
+            <LinearLayout style="@style/day_vertical_linear_layout">
+
+                <LinearLayout style="@style/day_horizontal_linear_layout">
+                    <TextView
+                        style="@style/work_time_swtich"
+                        android:text="@string/thursday" />
+                    <Switch
+                        android:id="@+id/switchThursday"
+                        style="@style/work_time_swtich" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/startAtThursdayInL"
+                            style="@style/non_focusable_text_input_layout">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/startAtThursdayEt"
+                                style="@style/non_focusable_text_edit_text"
+                                android:hint="@string/startAt" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/endAThursdayInL"
+                            style="@style/non_focusable_text_input_layout">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/endAtThursdayEt"
+                                style="@style/non_focusable_text_edit_text"
+                                android:hint="@string/endAt" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/sessionTimeThursdayInL"
+                        style="@style/focusable_text_input_layout">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/sessionThursdayTimeEt"
+                            style="@style/focusable_text_edit_text"
+                            android:hint="@string/session_duration"
+                            android:inputType="numberDecimal" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+            <!--Thursday-->
+            <!--friday-->
+            <LinearLayout style="@style/day_vertical_linear_layout">
+
+                <LinearLayout style="@style/day_horizontal_linear_layout">
+                    <TextView
+                        style="@style/work_time_swtich"
+                        android:text="@string/friday" />
+                    <Switch
+                        android:id="@+id/switchFriday"
+                        style="@style/work_time_swtich" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/startAtFridayInL"
+                            style="@style/non_focusable_text_input_layout">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/startAtFridayEt"
+                                style="@style/non_focusable_text_edit_text"
+                                android:hint="@string/startAt" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/endAFridayInL"
+                            style="@style/non_focusable_text_input_layout">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/endAtFridayEt"
+                                style="@style/non_focusable_text_edit_text"
+                                android:hint="@string/endAt" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/sessionTimeFridayInL"
+                        style="@style/focusable_text_input_layout">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/sessionFridayTimeEt"
+                            style="@style/focusable_text_edit_text"
+                            android:hint="@string/session_duration"
+                            android:inputType="numberDecimal" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+            <!--friday-->
+            <!--saturday-->
+            <LinearLayout style="@style/day_vertical_linear_layout">
+
+                <LinearLayout style="@style/day_horizontal_linear_layout">
+                    <TextView
+                        style="@style/work_time_swtich"
+                        android:text="@string/saturday" />
+                    <Switch
+                        android:id="@+id/switchSaturday"
+                        style="@style/work_time_swtich" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/startAtSaturdayInL"
+                            style="@style/non_focusable_text_input_layout">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/startAtSaturdayEt"
+                                style="@style/non_focusable_text_edit_text"
+                                android:hint="@string/startAt" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/endASaturdayInL"
+                            style="@style/non_focusable_text_input_layout">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/endAtSaturdayEt"
+                                style="@style/non_focusable_text_edit_text"
+                                android:hint="@string/endAt" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/sessionTimeSaturdayInL"
+                        style="@style/focusable_text_input_layout">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/sessionSaturdayTimeEt"
+                            style="@style/focusable_text_edit_text"
+                            android:hint="@string/session_duration"
+                            android:inputType="numberDecimal" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+            <!--saturday-->
+
+            <!--sunday-->
+            <LinearLayout style="@style/day_vertical_linear_layout">
+
+                <LinearLayout style="@style/day_horizontal_linear_layout">
+                    <TextView
+                        style="@style/work_time_swtich"
+                        android:text="@string/saturday" />
+                    <Switch
+                        android:id="@+id/switchSunday"
+                        style="@style/work_time_swtich" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/startAtSundayInL"
+                            style="@style/non_focusable_text_input_layout">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/startAtSundayEt"
+                                style="@style/non_focusable_text_edit_text"
+                                android:hint="@string/startAt" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/endASundayInL"
+                            style="@style/non_focusable_text_input_layout">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/endAtSundayEt"
+                                style="@style/non_focusable_text_edit_text"
+                                android:hint="@string/endAt" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/sessionTimeSundayInL"
+                        style="@style/focusable_text_input_layout">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/sessionSundayTimeEt"
+                            style="@style/focusable_text_edit_text"
+                            android:hint="@string/session_duration"
+                            android:inputType="numberDecimal" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+            <!--sunday-->
+
+
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>
