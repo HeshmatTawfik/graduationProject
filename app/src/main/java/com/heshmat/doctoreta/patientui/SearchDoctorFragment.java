@@ -1,6 +1,7 @@
 package com.heshmat.doctoreta.patientui;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -41,9 +42,11 @@ import com.heshmat.doctoreta.utils.LocationHelper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 
 import static android.app.Activity.RESULT_OK;
 import static com.google.firebase.firestore.Query.Direction.ASCENDING;
@@ -98,7 +101,10 @@ public class SearchDoctorFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-    public static SearchDoctorFragment newInstance(){return new SearchDoctorFragment();}
+
+    public static SearchDoctorFragment newInstance() {
+        return new SearchDoctorFragment();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -109,10 +115,13 @@ public class SearchDoctorFragment extends Fragment {
         }
     }
 
+    View view;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_search_doctor, container, false);
+        if (view == null)
+            view = inflater.inflate(R.layout.fragment_search_doctor, container, false);
         ButterKnife.bind(this, view);
 
         doctors = new ArrayList<>();
@@ -147,8 +156,9 @@ public class SearchDoctorFragment extends Fragment {
         }
 
         // Inflate the layout for this fragment
-        return  view;
+        return view;
     }
+
     private void init(String city) {
         query = doctorsRef/*.whereEqualTo("speciality", speciality==null?"Oncology (Tumor)":speciality)*/.whereEqualTo(fieldPath, city)
                 .whereLessThan("price", 3000.0).orderBy("price", DESCENDING).limit(15);
@@ -162,7 +172,7 @@ public class SearchDoctorFragment extends Fragment {
     }
 
     private void initDoctorsRecyclerView() {
-       // doctorsRecyclerView = this.findViewById(R.id.doctors_recycler_view);
+        // doctorsRecyclerView = this.findViewById(R.id.doctors_recycler_view);
         //doctorsRecyclerView.setLayoutManager(new WrapContentLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
 
@@ -185,6 +195,7 @@ public class SearchDoctorFragment extends Fragment {
         FieldPath fieldPath = FieldPath.of("addressInfo", "city");
 
         DoctorListLiveData doctorListLiveData = doctorListViewModel.getDoctorListLiveData(query);
+
         if (doctorListLiveData != null) {
             doctorListLiveData.observe(Objects.requireNonNull(getActivity()), new Observer<Operation>() {
                 @Override
@@ -192,9 +203,9 @@ public class SearchDoctorFragment extends Fragment {
                     switch (operation.type) {
                         case R.string.added:
                             Doctor addedDoctor = operation.doctor;
-                            if (!doctorIDs.containsKey(addedDoctor.getId())){
+                            if (!doctorIDs.containsKey(addedDoctor.getId())) {
                                 addDoctor(addedDoctor);
-                                doctorIDs.put(addedDoctor.getId(),"");
+                                doctorIDs.put(addedDoctor.getId(), "");
                             }
 
                             break;
@@ -218,7 +229,21 @@ public class SearchDoctorFragment extends Fragment {
     }
 
     private void addDoctor(Doctor addedDoctor) {
+        //doctorList.add(addedDoctor)
+       // Set<Doctor> s = new HashSet<Doctor>(doctorList);
+        //s.add(addedDoctor);
+        //doctorList.clear();
+        boolean found=false;
+        for(Doctor doctor:doctorList){
+            if (doctor.equals(addedDoctor)){
+                found=true;
+                break;
+            }
+        }
+        if (!found)
         doctorList.add(addedDoctor);
+       // doctorList.add(addedDoctor);
+
     }
 
     private void modifyDoctor(Doctor modifiedDoctor) {
@@ -271,10 +296,12 @@ public class SearchDoctorFragment extends Fragment {
     }
 
     private static final int FILTER_ACTIVITY = 2;
+
     @OnClick(R.id.openFilterBt)
     public void showFilter(View view) {
         startActivityForResult(new Intent(getContext(), FilterActivity.class), FILTER_ACTIVITY);
     }
+
     private void structFilterQuery(String city, String gender, String speciality, int[] arr) {
         Query query = doctorsRef.whereEqualTo(fieldPath, city).whereGreaterThanOrEqualTo("price", arr[0])
                 .whereLessThanOrEqualTo("price", arr[1]);
@@ -286,8 +313,8 @@ public class SearchDoctorFragment extends Fragment {
             query = query.whereEqualTo("speciality", speciality);
         }
         // query = query.orderBy("price", DESCENDING).limit(15);
-        if (doctorList != null)
-            doctorList.clear();
+       /* if (doctorList != null)
+            doctorList.clear();*/
         String sort = "asce";
         if (sort.equals("asce")) {
             query = query.orderBy("price", ASCENDING).limit(15);
@@ -316,6 +343,7 @@ public class SearchDoctorFragment extends Fragment {
         });
 
     }
+
     String speciality;
 
     @Override
@@ -343,11 +371,14 @@ public class SearchDoctorFragment extends Fragment {
 
         }
     }
+
     @Override
     public void onResume() {
-        if (doctorList != null) {
-            doctorList.clear();
-            doctorIDs.clear();
+        if (view == null) {
+            if (doctorList != null) {
+                doctorList.clear();
+                doctorIDs.clear();
+            }
         }
         super.onResume();
     }
@@ -357,4 +388,28 @@ public class SearchDoctorFragment extends Fragment {
         super.onStart();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onAttachFragment(@NonNull Fragment childFragment) {
+        super.onAttachFragment(childFragment);
+    }
 }

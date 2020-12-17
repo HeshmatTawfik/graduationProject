@@ -1,7 +1,6 @@
 package com.heshmat.doctoreta.models;
 
 public class Patient extends User{
-    public static Patient currentLoggedPatient;
     public Patient() {
     }
 

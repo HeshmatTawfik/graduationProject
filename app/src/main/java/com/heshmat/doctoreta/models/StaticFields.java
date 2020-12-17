@@ -18,4 +18,6 @@ public class StaticFields {
     public static final int LIMIT=5;
 
 
+    public static final String RESERVATIONS = "reservations";
+    public static final String FREE_SLOT = "free";
 }

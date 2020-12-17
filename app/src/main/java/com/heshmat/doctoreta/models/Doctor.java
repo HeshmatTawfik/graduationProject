@@ -2,6 +2,9 @@ package com.heshmat.doctoreta.models;
 
 import com.google.firebase.firestore.Exclude;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class Doctor  extends User{
     private String idCardUrl;
     private String medicalLicenseUrl;
@@ -12,6 +15,7 @@ public class Doctor  extends User{
     private AddressInfo addressInfo;
     private String status;
     private double price;
+    private HashMap<String, ArrayList<String>> availability;
 
 
 
@@ -80,6 +84,14 @@ public class Doctor  extends User{
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public HashMap<String, ArrayList<String>> getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(HashMap<String, ArrayList<String>> availability) {
+        this.availability = availability;
     }
 
     public Doctor(String id, String name, String phoneNumber, String email, String photoURL, String role) {

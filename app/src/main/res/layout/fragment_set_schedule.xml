@@ -5,8 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".doctorui.SetScheduleFragment">
-
-    <ScrollView
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <androidx.core.widget.NestedScrollView
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <!-- all the days of the week-->
@@ -19,23 +23,30 @@
                 android:layout_height="wrap_content"
                 android:text="@string/working_days"/>
             <!--Monday-->
-            <LinearLayout style="@style/day_vertical_linear_layout">
+            <LinearLayout
+                style="@style/day_vertical_linear_layout"
+               >
 
                 <LinearLayout style="@style/day_horizontal_linear_layout">
                     <TextView
                         style="@style/work_time_swtich"
                         android:text="@string/monday" />
+
                     <Switch
                         android:id="@+id/switchMonday"
-                        style="@style/work_time_swtich" />
+                        style="@style/SCBSwitch" />
+
+
 
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/linearLayoutMonday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -53,7 +64,7 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/endAMondayInL"
+                            android:id="@+id/endAtMondayInL"
                             style="@style/non_focusable_text_input_layout">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -87,15 +98,18 @@
                         android:text="@string/tuesday" />
                     <Switch
                         android:id="@+id/switchTuesday"
-                        style="@style/work_time_swtich" />
+                        style="@style/SCBSwitch" />
 
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/linearLayoutTuesday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -113,7 +127,7 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/endATuesdayInL"
+                            android:id="@+id/endAtTuesdayInL"
                             style="@style/non_focusable_text_input_layout">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -143,20 +157,25 @@
             <LinearLayout style="@style/day_vertical_linear_layout">
 
                 <LinearLayout style="@style/day_horizontal_linear_layout">
+
+
+
                     <TextView
                         style="@style/work_time_swtich"
                         android:text="@string/wednesday" />
                     <Switch
                         android:id="@+id/switchWednesday"
-                        style="@style/work_time_swtich" />
+                        style="@style/SCBSwitch" />
 
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/linearLayoutWednesday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -174,7 +193,7 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/endAWednesdayInL"
+                            android:id="@+id/endAtWednesdayInL"
                             style="@style/non_focusable_text_input_layout">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -209,15 +228,17 @@
                         android:text="@string/thursday" />
                     <Switch
                         android:id="@+id/switchThursday"
-                        style="@style/work_time_swtich" />
+                        style="@style/SCBSwitch" />
 
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/linearLayoutThursday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -235,7 +256,7 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/endAThursdayInL"
+                            android:id="@+id/endAtThursdayInL"
                             style="@style/non_focusable_text_input_layout">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -270,15 +291,17 @@
                         android:text="@string/friday" />
                     <Switch
                         android:id="@+id/switchFriday"
-                        style="@style/work_time_swtich" />
+                        style="@style/SCBSwitch" />
 
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/linearLayoutFriday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -296,7 +319,7 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/endAFridayInL"
+                            android:id="@+id/endAtFridayInL"
                             style="@style/non_focusable_text_input_layout">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -331,15 +354,17 @@
                         android:text="@string/saturday" />
                     <Switch
                         android:id="@+id/switchSaturday"
-                        style="@style/work_time_swtich" />
+                        style="@style/SCBSwitch" />
 
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/linearLayoutSaturday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -357,7 +382,7 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/endASaturdayInL"
+                            android:id="@+id/endAtSaturdayInL"
                             style="@style/non_focusable_text_input_layout">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -390,18 +415,20 @@
                 <LinearLayout style="@style/day_horizontal_linear_layout">
                     <TextView
                         style="@style/work_time_swtich"
-                        android:text="@string/saturday" />
+                        android:text="@string/sunday" />
                     <Switch
                         android:id="@+id/switchSunday"
-                        style="@style/work_time_swtich" />
+                        style="@style/SCBSwitch" />
 
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/linearLayoutSunday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -419,7 +446,7 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/endASundayInL"
+                            android:id="@+id/endAtSundayInL"
                             style="@style/non_focusable_text_input_layout">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -449,5 +476,14 @@
 
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
+    <Button
+        android:id="@+id/saveAvailabilityBt"
+        style="@style/border_button"
+        android:layout_margin="10dp"
+
+        android:text="@string/set_working_hours"
+
+        />
+</LinearLayout>
 </FrameLayout>

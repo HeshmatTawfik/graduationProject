@@ -1,6 +1,7 @@
 package com.heshmat.doctoreta.patientui;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -32,15 +33,22 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.heshmat.doctoreta.DatabaseInstance;
 import com.heshmat.doctoreta.MainActivity;
 import com.heshmat.doctoreta.R;
 import com.heshmat.doctoreta.activities.LoginActivity;
 import com.heshmat.doctoreta.models.Doctor;
 import com.heshmat.doctoreta.models.Patient;
+import com.heshmat.doctoreta.models.StaticFields;
 import com.heshmat.doctoreta.models.User;
 import com.heshmat.doctoreta.utils.CircleTransform;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import static com.heshmat.doctoreta.activities.LoginActivity.gso;
 
@@ -54,14 +62,10 @@ public class HomeActivity extends AppCompatActivity implements
     ActionBarDrawerToggle toggle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
     TextView drawerUserNameTv;
-
     TextView drawerUserEmailTv;
-
     ImageView userIv;
     public static Activity activity;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,19 @@ public class HomeActivity extends AppCompatActivity implements
 
         navigationView.setNavigationItemSelectedListener(this);
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
+        final String CLIENT_ID = User.currentLoggedUser.getId();
+        if(CLIENT_ID!=null)
+            DatabaseInstance.getInstance().collection(StaticFields.CLIENTS).document(CLIENT_ID).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                    if (value != null) {
+                        User.currentLoggedUser = value.toObject(Patient.class);
+
+                    }
+
+
+                }
+            });
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
@@ -117,6 +134,14 @@ public class HomeActivity extends AppCompatActivity implements
         }
 
     }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        onCreate(savedInstanceState);
+
+    }
+
 
     Class fragment = null;
 
@@ -195,12 +220,13 @@ public class HomeActivity extends AppCompatActivity implements
                 .signOut(this)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     public void onComplete(@NonNull Task<Void> task) {
-                        User.currentLoggedUser=null;
-                        Doctor.currentLoggedDoctor=null;
+                        User.currentLoggedUser = null;
+                        Doctor.currentLoggedDoctor = null;
                         Intent intent = new Intent(HomeActivity.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
-                        finish();                    }
+                        finish();
+                    }
                 });
        /* GoogleSignInOptions  gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))

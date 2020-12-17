@@ -1,5 +1,7 @@
 package com.heshmat.doctoreta.models;
 
+import androidx.annotation.Nullable;
+
 public class User {
     private String id;
     private String name;
@@ -95,5 +97,15 @@ public class User {
         this.role = role;
     }
 
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        User user= (User) obj;
 
+        return this.id.equals(user.getId())&&this.getName().equals(user.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id.hashCode()+this.name.hashCode();
+    }
 }

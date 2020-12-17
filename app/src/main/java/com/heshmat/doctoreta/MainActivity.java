@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                     String name = documentSnapshot.get("name", String.class);
                     String phoneNumber = documentSnapshot.get("phoneNumber", String.class);
                     String email = documentSnapshot.get("email", String.class);
-                    Doctor.currentLoggedDoctor = new Doctor(id, name, phoneNumber, email);
+                    Doctor.currentLoggedDoctor = documentSnapshot.toObject(Doctor.class);
                     startActivity(new Intent(context, DoctorHomeActivity.class));
                     finish();
 
@@ -326,12 +326,12 @@ public class MainActivity extends AppCompatActivity {
                                 /*Todo:check doctor collections */
                                 /**TODO code will be modificated as we be sure about doctor stare where he is enabled or no*/
                                 if (isVerified)
-                                    DatabaseInstance.getInstance().collection("doctors").document(user.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    DatabaseInstance.getInstance().collection("doctors").document(user.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                                         @Override
-                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                                             if (documentSnapshot.contains("name") && documentSnapshot.contains("phoneNumber") && documentSnapshot.contains("email")) {
                                                 /**all info is found */
-                                                Doctor.currentLoggedDoctor = new Doctor(user.getUid(), documentSnapshot.get("name", String.class), documentSnapshot.get("phoneNumber", String.class), documentSnapshot.get("email", String.class));
+                                                Doctor.currentLoggedDoctor = documentSnapshot.toObject(Doctor.class);
                                                 startActivity(DoctorHomeActivity.class);
 
                                             } else {
@@ -343,9 +343,9 @@ public class MainActivity extends AppCompatActivity {
                                         }
                                     });
                                 else {
-                                    DatabaseInstance.getInstance().collection(StaticFields.UNVERIFIED_DOCTORS).document(user.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    DatabaseInstance.getInstance().collection(StaticFields.UNVERIFIED_DOCTORS).document(user.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                                         @Override
-                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                                             if (documentSnapshot.contains("name") && documentSnapshot.contains("phoneNumber") && documentSnapshot.contains("email")) {
                                                 /**all info is found */
                                                 Doctor.currentLoggedDoctor = new Doctor(user.getUid(), documentSnapshot.get("name", String.class), documentSnapshot.get("phoneNumber", String.class), documentSnapshot.get("email", String.class));
@@ -363,9 +363,9 @@ public class MainActivity extends AppCompatActivity {
 
                             } else if (role != null && role.equals(StaticFields.PATIENT_ROLE)) {
                                 /*Todo:check patient collections */
-                                DatabaseInstance.getInstance().collection("clients").document(user.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                DatabaseInstance.getInstance().collection("clients").document(user.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                                     @Override
-                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                                         if (documentSnapshot.contains("name") && documentSnapshot.contains("phoneNumber") && documentSnapshot.contains("email")) {
                                             /**all info is found */
                                             //User.currentLoggedUser = new Patient(user.getUid(), documentSnapshot.get("name", String.class), documentSnapshot.get("phoneNumber", String.class), documentSnapshot.get("email", String.class));

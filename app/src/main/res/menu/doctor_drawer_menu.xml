@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/profileMenuItem"
+            android:icon="@drawable/ic_profile"
+            android:title="@string/profile" />
+
+        <item
+            android:id="@+id/workingTimeMenuItem"
+            android:icon="@drawable/ic_schedule"
+            android:title="@string/working_time" />
+        <item
+            android:id="@+id/setReservationsMenuItem"
+            android:icon="@drawable/ic_calendar"
+            android:title="@string/reservation_schedule" />
+    </group>
+
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/logoutMenuItem"
+                android:title="@string/logout"
+                android:icon="@drawable/ic_exit_to_app"
+                />
+
+        </menu>
+    </item>
+
+</menu>

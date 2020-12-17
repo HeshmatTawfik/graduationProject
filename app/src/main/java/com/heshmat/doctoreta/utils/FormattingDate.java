@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class FormattingDate {
@@ -32,5 +33,19 @@ public class FormattingDate {
 
         Log.i("getAge", "getAge: " + age);
         return age;
+    }
+    public static HashMap<String,String> getDaysOfWeek(Date refDate, int firstDayOfWeek) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(refDate);
+        calendar.set(Calendar.DAY_OF_WEEK, firstDayOfWeek);
+        HashMap<String,String> dateHashMap=new HashMap<>();
+        for (int i = 0; i < 7; i++) {
+            calendar.get(Calendar.DAY_OF_WEEK);
+            new SimpleDateFormat("EEEE", Locale.ENGLISH).format(calendar.getTime());
+            dateHashMap.put(new SimpleDateFormat("EEEE", Locale.ENGLISH).format(calendar.getTime()),
+                    new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH).format(calendar.getTime()));
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        return dateHashMap;
     }
 }

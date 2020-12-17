@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,9 +22,6 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.firebase.ui.auth.AuthMethodPickerLayout;
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -54,11 +52,10 @@ import com.heshmat.doctoreta.models.StaticFields;
 import com.heshmat.doctoreta.models.User;
 import com.heshmat.doctoreta.patientui.HomeActivity;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
-public class LoginActivity extends AppCompatActivity implements  View.OnClickListener{
+public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,
+        View.OnClickListener {
     public static GoogleSignInOptions gso;
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "LoginAct";
@@ -67,7 +64,7 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
     private FirebaseAuth.AuthStateListener mAuthListener;
     private CallbackManager mCallbackManager;
     private Activity activity;
-    List<AuthUI.IdpConfig> providers;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -77,43 +74,83 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         activity = this;
-         providers = Arrays.asList(
-                new AuthUI.IdpConfig.GoogleBuilder().build(),
-                new AuthUI.IdpConfig.FacebookBuilder().build()
-              );
-     /*   AuthMethodPickerLayout customLayout = new AuthMethodPickerLayout
-                .Builder(R.layout.activity_login)
-                .setGoogleButtonId(R.id.google_login_button)
-                .setFacebookButtonId(R.id.fb_loginButton)
+
+
+        LoginButton mFacebookSignInButton = (LoginButton) findViewById(R.id.fb_loginButton);
+
+        mFacebookSignInButton.setLoginText(getString(R.string.continue_with_facebook));
+        SignInButton mGoogleSignInButton = findViewById(R.id.google_login_button);
+        setGooglePlusButtonText(mGoogleSignInButton, getString(R.string.continue_with_google));
+
+        Intent intent = getIntent();
+        String role = intent.getStringExtra("role");
+        /**sigin in code*/
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        mCallbackManager = CallbackManager.Factory.create();
+        mFacebookSignInButton.setReadPermissions("email", "public_profile");
+        mFacebookSignInButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                firebaseAuthWithFacebook(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.i(TAG + "fb callback", Objects.requireNonNull(error.getMessage()));
+            }
+        });
+        /** google sign in code*/
+        mGoogleSignInButton.setOnClickListener(this);
+
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
                 .build();
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        .setAuthMethodPickerLayout(customLayout)
-                        .setTheme(R.style.mystle)
-                        .build(),
-                RC_SIGN_IN);*/
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+        // Initialize FirebaseAuth
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    new Authentication().execute(user);
+
+
+                } else {
+
+                }
+            }
+        };
 
 
     }
-//                    new Authentication().execute(user);
+
     @Override
     public void onStart() {
         super.onStart();
-      //  mAuth.addAuthStateListener(mAuthListener);
+        mAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-      /*  if (mAuthListener != null) {
+        if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
-        }*/
+        }
     }
 
 
-   /* private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
 
         mAuth.signInWithCredential(credential)
@@ -126,7 +163,10 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Authentication failed." + task.getException(),
-                                    Toast.LENGTH_SHORT).show();
+                                    Toast.LENGTH_LONG).show();
+                            Log.i(TAG, "onConnectionFailed: "+ task.getException());
+                            new AlertDialog.Builder(LoginActivity.this).setMessage(task.getException().toString())
+                                    .setPositiveButton("ok",null).show();
                             Disconnect_google();
                         } else {
                             //TODO:move to next activity and intialize
@@ -137,7 +177,7 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
                     }
                 });
     }
-*//*
+
     private void firebaseAuthWithFacebook(AccessToken token) {
 
         final AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
@@ -152,6 +192,7 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+
                         } else {
                             // isNetworkConnected();
 
@@ -178,57 +219,22 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
                 return;
         }
     }
-*/
 
-
-    @Override
-    public void onClick(View view){
-        switch (view.getId()) {
-
-            case R.id.google_login_button:
-
-                break;
-            case R.id.fb_loginButton:
-
-
-                break;
-
-            default:
-                return;
-        }
-
-    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-     //   mCallbackManager.onActivityResult(requestCode, resultCode, data);
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
-
-            if (resultCode == RESULT_OK) {
-                // Successfully signed in
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                new Authentication().execute(user);
-                // ...
-            } else {
-                Log.i(TAG, "onActivityResult: "+response.getError());
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
-            }
-            /*
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             assert result != null;
             if (result.isSuccess()) {
                 GoogleSignInAccount account = result.getSignInAccount();
-              //  firebaseAuthWithGoogle(account);
+                firebaseAuthWithGoogle(account);
             } else {
                 Log.i("google sign in fail", "onActivityResult: " + result.getStatus().getStatusMessage() + " +" + result.getStatus().getStatusCode());
                 // Google Sign In failed
-            }*/
-
+            }
         }
     }
 
@@ -260,11 +266,13 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
         }
     }
 
- /*   @Override
+    @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Toast.makeText(this, "Google Play Services error." + connectionResult.getErrorMessage(), Toast.LENGTH_SHORT).show();
-
-    }*/
+        Log.i(TAG, "onConnectionFailed: "+ connectionResult.getErrorMessage());
+        new AlertDialog.Builder(this).setMessage(connectionResult.getErrorMessage())
+                .setPositiveButton("ok",null).show();
+    }
 
     private void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {
         // Find the TextView that is inside of the SignInButton and set its text
@@ -278,8 +286,6 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
             }
         }
     }
-
-
 
     class Authentication extends AsyncTask<FirebaseUser, Void, Void> {
         FirebaseUser user;
@@ -311,7 +317,7 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
                                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                                             if (documentSnapshot.contains("name") && documentSnapshot.contains("phoneNumber") && documentSnapshot.contains("email")) {
                                                 /**all info is found */
-                                                Doctor.currentLoggedDoctor = new Doctor(user.getUid(), documentSnapshot.get("name", String.class), documentSnapshot.get("phoneNumber", String.class), documentSnapshot.get("email", String.class));
+                                                Doctor.currentLoggedDoctor = documentSnapshot.toObject(Doctor.class);
                                                 startActivity(DoctorHomeActivity.class);
 
                                             } else {
