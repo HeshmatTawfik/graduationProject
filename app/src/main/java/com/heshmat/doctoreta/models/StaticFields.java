@@ -17,7 +17,10 @@ public class StaticFields {
     public static final String REJECTED ="REJECTED" ;
     public static final int LIMIT=5;
 
-
     public static final String RESERVATIONS = "reservations";
     public static final String FREE_SLOT = "free";
+    public static final String RESERVED = "reserved";
+    public static final String RESERVATION_STATUS_WAITING = "waiting";
+
+
 }

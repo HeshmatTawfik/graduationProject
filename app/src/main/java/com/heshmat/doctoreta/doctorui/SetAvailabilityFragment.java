@@ -29,8 +29,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.core.operation.Merge;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.heshmat.doctoreta.DatabaseInstance;
 import com.heshmat.doctoreta.LoadingDialog;
 import com.heshmat.doctoreta.R;
@@ -231,7 +233,7 @@ public class SetAvailabilityFragment extends Fragment {
         HashMap<String, HashMap<String, HashMap<String, String>>> schedule = new HashMap<>();
         schedule.put("dates", hashMap);
         FirebaseFirestore.getInstance().collection(StaticFields.RESERVATIONS).document(Doctor.currentLoggedDoctor.getId())
-                .set(schedule).addOnSuccessListener(new OnSuccessListener<Void>() {
+                .set(schedule, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 showMessage(getString(R.string.shedule_set_success));

@@ -30,6 +30,7 @@ public class LoadingDialog {
     }
 
     public void startLoadingDialog() {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         LayoutInflater inflater = activity.getLayoutInflater();
         View view = inflater.inflate(R.layout.loading_dialog, null);
@@ -50,7 +51,7 @@ public class LoadingDialog {
 
     public void dismissDialog() {
 
-        if (dialog!=null)
+        if (dialog!=null && dialog.isShowing())
         dialog.dismiss();
     }
 
@@ -65,6 +66,8 @@ public class LoadingDialog {
             }
         });
         vectorDrawable.start();
+
     }
+
 
 }

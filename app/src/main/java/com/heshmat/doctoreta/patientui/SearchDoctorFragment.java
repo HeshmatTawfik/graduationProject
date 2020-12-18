@@ -129,7 +129,7 @@ public class SearchDoctorFragment extends Fragment {
         city = "Kyiv";
         if (firebaseFirestore == null)
             firebaseFirestore = FirebaseFirestore.getInstance();
-        locationHelper = new LocationHelper(Objects.requireNonNull(getActivity()));
+        locationHelper = new LocationHelper(requireActivity());
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         doctorsRef = firebaseFirestore.collection("doctors");
@@ -197,7 +197,7 @@ public class SearchDoctorFragment extends Fragment {
         DoctorListLiveData doctorListLiveData = doctorListViewModel.getDoctorListLiveData(query);
 
         if (doctorListLiveData != null) {
-            doctorListLiveData.observe(Objects.requireNonNull(getActivity()), new Observer<Operation>() {
+            doctorListLiveData.observe(requireActivity(), new Observer<Operation>() {
                 @Override
                 public void onChanged(Operation operation) {
                     switch (operation.type) {

@@ -48,21 +48,38 @@ public class TimeSlotListLiveData extends LiveData<TimeSlotOperation> implements
         for (DocumentChange documentChange : querySnapshot.getDocumentChanges()) {
             switch (documentChange.getType()) {
                 case ADDED:
+                    try {
+
+
                     HashMap<String, HashMap<String, String>> addedDoctorSchedule = (HashMap<String, HashMap<String, String>>) documentChange.getDocument().get("dates");
                     TimeSlotOperation addOperation = new TimeSlotOperation(addedDoctorSchedule, R.string.added);
                     setValue(addOperation);
                     break;
+                    }
+                    catch (Exception ex){
+
+                    }
 
                 case MODIFIED:
-                    HashMap<String, HashMap<String, String>> modifiedDoctorSchedule = (HashMap<String, HashMap<String, String>>) documentChange.getDocument().get("dates");
-                    TimeSlotOperation modifyOperation = new TimeSlotOperation(modifiedDoctorSchedule, R.string.modified);
-                    setValue(modifyOperation);
-                    break;
+                    try {
+                        HashMap<String, HashMap<String, String>> modifiedDoctorSchedule = (HashMap<String, HashMap<String, String>>) documentChange.getDocument().get("dates");
+                        TimeSlotOperation modifyOperation = new TimeSlotOperation(modifiedDoctorSchedule, R.string.modified);
+                        setValue(modifyOperation);
+                        break;
+                    }
+                    catch (Exception ex){
+
+                    }
 
                 case REMOVED:
+                    try{
                     HashMap<String, HashMap<String, String>> removedDoctorSchedule = (HashMap<String, HashMap<String, String>>) documentChange.getDocument().get("dates");
                     TimeSlotOperation removeOperation = new TimeSlotOperation(removedDoctorSchedule, R.string.removed);
                     setValue(removeOperation);
+                    }
+                    catch (Exception ex){
+
+                    }
             }
         }
 

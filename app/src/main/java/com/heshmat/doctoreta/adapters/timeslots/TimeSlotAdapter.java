@@ -1,6 +1,7 @@
 package com.heshmat.doctoreta.adapters.timeslots;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -12,8 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.heshmat.doctoreta.activities.SignInUpActivity;
 import com.heshmat.doctoreta.models.TimeSlot;
 import com.heshmat.doctoreta.R;
+import com.heshmat.doctoreta.patientui.PaymentActivity;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -31,14 +34,30 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.TransitionManager;
 
 public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.TimeSlotViewHolder> {
+    private final double price;
     private List<TimeSlot> timeSlots;
     private List<HashMap<String, HashMap<String, String>>> doctorList;
     Context context;
     int mExpandedPosition = -1;
     int previousExpandedPosition = -1;
     private RecyclerView recyclerView;
+   private String doctorID;
+    private String doctorName;
+    private String doctorEmail;
+    private static final String DOCTOR_ID = "DOCTOR_ID";
+    private static final String DOCTOR_NAME = "DOCTOR_NAME";
+    private static final String DOCTOR_EMAIL = "DOCTOR_EMAIL";
+    private static final String PRICE = "PRICE";
+    private static final String RESERVATION_DATE="DATE";
+    private static final String RESERVATION_HOUR="HOUR";
 
-    public TimeSlotAdapter(List<HashMap<String, HashMap<String, String>>> doctorList, Context context) {
+
+    public TimeSlotAdapter(List<HashMap<String, HashMap<String, String>>> doctorList, Context context,String doctorID,String doctorName,String doctorEmail,
+                           double price) {
+        this.doctorID=doctorID;
+        this.doctorName=doctorName;
+        this.doctorEmail=doctorEmail;
+        this.price=price;
         this.doctorList = doctorList;
         if (!doctorList.isEmpty())
             this.timeSlots = TimeSlot.timeSlots(doctorList.get(0));
@@ -160,7 +179,19 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.TimeSl
                         textView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(context, timeSlot.getDate() + " " + textView.getText(), Toast.LENGTH_SHORT).show();
+                                Intent intent=new Intent(context, PaymentActivity.class);
+                                intent.putExtra(DOCTOR_ID,doctorID);
+                                intent.putExtra(DOCTOR_NAME,doctorName);
+                                intent.putExtra(DOCTOR_EMAIL,doctorEmail);
+                                intent.putExtra(PRICE,price);
+                                intent.putExtra(RESERVATION_DATE,timeSlot.getDate() );
+                                intent.putExtra(RESERVATION_HOUR,textView.getText());
+                                context.startActivity(intent);
+
+
+
+
+                                Toast.makeText(context, doctorID+" "+timeSlot.getDate() + " " + textView.getText(), Toast.LENGTH_SHORT).show();
                             }
                         });
                         horiLL.addView(textView);

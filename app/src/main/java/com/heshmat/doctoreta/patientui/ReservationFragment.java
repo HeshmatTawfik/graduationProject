@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,11 +47,17 @@ public class ReservationFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String DOCTOR_ID = "DOCTOR_ID";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String DOCTOR_NAME = "DOCTOR_NAME";
+    private static final String DOCTOR_EMAIL = "DOCTOR_EMAIL";
+    private static final String PRICE = "PRICE";
+
+
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String mParamDoctorID;
+    private String mParamDoctorName;
+    private String mParamDoctorEmail;
+    private double mPrice;
     String id;
     private List<HashMap<String, HashMap<String, String>>> slotsList = new ArrayList<HashMap<String, HashMap<String, String>>>();
     private RecyclerView doctorsRecyclerView;
@@ -72,23 +79,21 @@ public class ReservationFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+
      * @return A new instance of fragment ReservationFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ReservationFragment newInstance(String param1, String param2) {
+
+    public static ReservationFragment newInstance(String doctorID,String doctorName,String doctorEmail,double price) {
         ReservationFragment fragment = new ReservationFragment();
         Bundle args = new Bundle();
-        args.putString(DOCTOR_ID, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-    public static ReservationFragment newInstance(String param1) {
-        ReservationFragment fragment = new ReservationFragment();
-        Bundle args = new Bundle();
-        args.putString(DOCTOR_ID, param1);
+        args.putString(DOCTOR_ID, doctorID);
+        args.putString(DOCTOR_NAME, doctorName);
+        args.putString(DOCTOR_EMAIL, doctorEmail);
+        args.putDouble(PRICE, price);
+
+
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -97,8 +102,10 @@ public class ReservationFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(DOCTOR_ID);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParamDoctorID = getArguments().getString(DOCTOR_ID);
+            mParamDoctorName = getArguments().getString(DOCTOR_NAME);
+            mParamDoctorEmail =getArguments().getString(DOCTOR_EMAIL);
+            mPrice=getArguments().getDouble(PRICE);
         }
     }
 
@@ -109,7 +116,7 @@ public class ReservationFragment extends Fragment {
         doctorsRecyclerView = view.findViewById(R.id.timeSlotRv);
         ((SimpleItemAnimator) Objects.requireNonNull(doctorsRecyclerView.getItemAnimator())).setSupportsChangeAnimations(false);
 
-        id = mParam1;
+        id = mParamDoctorID;
         context = this.getContext();
         slot = new HashMap<>();
         receiver = new BroadcastReceiver() {
@@ -152,7 +159,7 @@ public class ReservationFragment extends Fragment {
     }
     private void initDoctorsAdapter() {
         //  ArrayList<TimeSlot> slots = TimeSlot.timeSlots(doctorList.get(i));
-        timeSlotAdapter = new TimeSlotAdapter(slotsList, context);
+        timeSlotAdapter = new TimeSlotAdapter(slotsList, context,id,mParamDoctorName,mParamDoctorEmail,mPrice);
         timeSlotAdapter.setHasStableIds(false);
         doctorsRecyclerView.setAdapter(timeSlotAdapter);
 
@@ -160,13 +167,14 @@ public class ReservationFragment extends Fragment {
     private void initDoctorListViewModel() {
         timeSlotListViewModel = new ViewModelProvider(this).get(TimeSlotListViewModel.class);
     }
+    TimeSlotListLiveData doctorListLiveData;
     private void getDoctors() {
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
         CollectionReference doctorsRef = firebaseFirestore.collection("reservations");
 
-        TimeSlotListLiveData doctorListLiveData = timeSlotListViewModel.getTimeSlotListLiveData(query);
+         doctorListLiveData = timeSlotListViewModel.getTimeSlotListLiveData(query);
         if (doctorListLiveData != null) {
-            doctorListLiveData.observe(Objects.requireNonNull(getActivity()), new Observer<TimeSlotOperation>() {
+            doctorListLiveData.observe(requireActivity(), new Observer<TimeSlotOperation>() {
                 @Override
                 public void onChanged(TimeSlotOperation operation) {
                     switch (operation.type) {
@@ -250,6 +258,16 @@ public class ReservationFragment extends Fragment {
     public void onPause() {
         context.unregisterReceiver(receiver);
         super.onPause();
+
     }
 
+    @Override
+    public void onDestroy() {
+        if (doctorListLiveData!=null){
+            Log.i("reservationFrag", "onDestroy: was destored");
+            doctorListLiveData.removeObservers(this);
+        }
+        super.onDestroy();
+
+    }
 }

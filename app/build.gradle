@@ -43,6 +43,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:20.0.0'
     implementation 'com.google.firebase:firebase-storage:19.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.firebase:firebase-database:19.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
     implementation 'com.google.android.material:material:1.1.0'
     /*image crop*/
@@ -71,4 +72,10 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation files('libs/commons-net-3.7.2.jar')
+    /**/
+    implementation "com.stripe:stripeterminal:1.0.17"
+    implementation 'com.stripe:stripe-android:16.1.1'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.0'
+    implementation 'com.google.firebase:firebase-functions:19.1.0'
+
 }

@@ -84,6 +84,8 @@ public class DoctorsAdapter extends RecyclerView.Adapter<DoctorsAdapter.DoctorVi
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                     if (value != null && value.exists() && value.contains("dates")) {
+                            try{
+
                         HashMap<String, HashMap<String, String>> doctorSchedule = (HashMap<String, HashMap<String, String>>) value.get("dates");
                         if (doctorSchedule != null) {
                             String t=avaiableTime(doctorSchedule);
@@ -93,7 +95,10 @@ public class DoctorsAdapter extends RecyclerView.Adapter<DoctorsAdapter.DoctorVi
                             }
 
                         }
+                    }
+                    catch (Exception ex){
 
+                    }
 
                     }
 
@@ -108,7 +113,9 @@ public class DoctorsAdapter extends RecyclerView.Adapter<DoctorsAdapter.DoctorVi
             HomeActivity activity = (HomeActivity) context;
             activity.getSupportFragmentManager().beginTransaction()
                     .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                    .replace(R.id.fragmentContainer, ReservationFragment.newInstance(doctor.getId())).addToBackStack(ReservationFragment.class.getName())
+                    .replace(R.id.fragmentContainer, ReservationFragment.newInstance(doctor.getId(),doctor.getName()
+                            ,doctor.getEmail(),doctor.getPrice()
+                    )).addToBackStack(ReservationFragment.class.getName())
                     .commit();
 
         }
