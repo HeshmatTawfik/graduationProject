@@ -38,11 +38,7 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(String date, String status, String time) {
-        this.date = date;
-        this.status = status;
-        this.time = time;
-    }
+
 
     @Exclude
     public String getReservationId() {

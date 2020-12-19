@@ -14,6 +14,10 @@
             android:id="@+id/setReservationsMenuItem"
             android:icon="@drawable/ic_calendar"
             android:title="@string/reservation_schedule" />
+        <item
+            android:id="@+id/doctorAppointmentsMenuItem"
+            android:icon="@drawable/ic_appointment"
+            android:title="@string/my_appointment" />
     </group>
 
     <item android:title="">

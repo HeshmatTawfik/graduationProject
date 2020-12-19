@@ -44,20 +44,25 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.TimeSl
    private String doctorID;
     private String doctorName;
     private String doctorEmail;
+    private String speciality;
     private static final String DOCTOR_ID = "DOCTOR_ID";
     private static final String DOCTOR_NAME = "DOCTOR_NAME";
     private static final String DOCTOR_EMAIL = "DOCTOR_EMAIL";
     private static final String PRICE = "PRICE";
     private static final String RESERVATION_DATE="DATE";
     private static final String RESERVATION_HOUR="HOUR";
+    private static final String SPECIALITY = "SPECIALITY";
+
+
 
 
     public TimeSlotAdapter(List<HashMap<String, HashMap<String, String>>> doctorList, Context context,String doctorID,String doctorName,String doctorEmail,
-                           double price) {
+                           double price,String speciality) {
         this.doctorID=doctorID;
         this.doctorName=doctorName;
         this.doctorEmail=doctorEmail;
         this.price=price;
+        this.speciality=speciality;
         this.doctorList = doctorList;
         if (!doctorList.isEmpty())
             this.timeSlots = TimeSlot.timeSlots(doctorList.get(0));
@@ -186,6 +191,7 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.TimeSl
                                 intent.putExtra(PRICE,price);
                                 intent.putExtra(RESERVATION_DATE,timeSlot.getDate() );
                                 intent.putExtra(RESERVATION_HOUR,textView.getText());
+                                intent.putExtra(SPECIALITY,speciality);
                                 context.startActivity(intent);
 
 

@@ -50,6 +50,8 @@ public class ReservationFragment extends Fragment {
     private static final String DOCTOR_NAME = "DOCTOR_NAME";
     private static final String DOCTOR_EMAIL = "DOCTOR_EMAIL";
     private static final String PRICE = "PRICE";
+    private static final String SPECIALITY = "SPECIALITY";
+
 
 
 
@@ -57,7 +59,9 @@ public class ReservationFragment extends Fragment {
     private String mParamDoctorID;
     private String mParamDoctorName;
     private String mParamDoctorEmail;
+    private String mSpeciality;
     private double mPrice;
+
     String id;
     private List<HashMap<String, HashMap<String, String>>> slotsList = new ArrayList<HashMap<String, HashMap<String, String>>>();
     private RecyclerView doctorsRecyclerView;
@@ -84,13 +88,15 @@ public class ReservationFragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
 
-    public static ReservationFragment newInstance(String doctorID,String doctorName,String doctorEmail,double price) {
+    public static ReservationFragment newInstance(String doctorID,String doctorName,String doctorEmail,double price,String speciality) {
         ReservationFragment fragment = new ReservationFragment();
         Bundle args = new Bundle();
         args.putString(DOCTOR_ID, doctorID);
         args.putString(DOCTOR_NAME, doctorName);
         args.putString(DOCTOR_EMAIL, doctorEmail);
         args.putDouble(PRICE, price);
+        args.putString(SPECIALITY,speciality);
+
 
 
 
@@ -106,6 +112,7 @@ public class ReservationFragment extends Fragment {
             mParamDoctorName = getArguments().getString(DOCTOR_NAME);
             mParamDoctorEmail =getArguments().getString(DOCTOR_EMAIL);
             mPrice=getArguments().getDouble(PRICE);
+            mSpeciality=getArguments().getString(SPECIALITY);
         }
     }
 
@@ -159,7 +166,7 @@ public class ReservationFragment extends Fragment {
     }
     private void initDoctorsAdapter() {
         //  ArrayList<TimeSlot> slots = TimeSlot.timeSlots(doctorList.get(i));
-        timeSlotAdapter = new TimeSlotAdapter(slotsList, context,id,mParamDoctorName,mParamDoctorEmail,mPrice);
+        timeSlotAdapter = new TimeSlotAdapter(slotsList, context,id,mParamDoctorName,mParamDoctorEmail,mPrice,mSpeciality);
         timeSlotAdapter.setHasStableIds(false);
         doctorsRecyclerView.setAdapter(timeSlotAdapter);
 

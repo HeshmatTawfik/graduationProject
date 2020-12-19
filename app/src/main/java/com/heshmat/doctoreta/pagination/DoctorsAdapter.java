@@ -114,7 +114,7 @@ public class DoctorsAdapter extends RecyclerView.Adapter<DoctorsAdapter.DoctorVi
             activity.getSupportFragmentManager().beginTransaction()
                     .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                     .replace(R.id.fragmentContainer, ReservationFragment.newInstance(doctor.getId(),doctor.getName()
-                            ,doctor.getEmail(),doctor.getPrice()
+                            ,doctor.getEmail(),doctor.getPrice(),doctor.getSpeciality()
                     )).addToBackStack(ReservationFragment.class.getName())
                     .commit();
 
@@ -136,13 +136,16 @@ public class DoctorsAdapter extends RecyclerView.Adapter<DoctorsAdapter.DoctorVi
                         reser.set(Calendar.MINUTE, Integer.parseInt(startTimeStr[0].split(":")[1]));
                         if (reser.after(dateNow)) {
                             if (doctorSchedule.get(s).get(hour).equals("free"))
-                                return "Today";
+                                return context.getString(R.string.today);
                         }
 
                     }
 
                 } else if (reser.get(Calendar.DAY_OF_MONTH) == dateNow.get(Calendar.DAY_OF_MONTH) + 1 && reser.get(Calendar.MONTH) == dateNow.get(Calendar.MONTH)) {
-                    return "Tommorow";
+                    if (doctorSchedule.get(s)==null)
+                        return "";
+
+                    return context.getString(R.string.tomorrow);
                 }
 
 

@@ -27,6 +27,7 @@ import com.heshmat.doctoreta.doctorui.SetScheduleFragment;
 import com.heshmat.doctoreta.models.Doctor;
 import com.heshmat.doctoreta.models.StaticFields;
 import com.heshmat.doctoreta.models.User;
+import com.heshmat.doctoreta.patientui.AppointmentsActivity;
 import com.heshmat.doctoreta.patientui.HomeActivity;
 import com.heshmat.doctoreta.patientui.SearchDoctorFragment;
 import com.heshmat.doctoreta.utils.CircleTransform;
@@ -134,6 +135,11 @@ public class DoctorHomeActivity extends AppCompatActivity implements    Navigati
         switch (item.getItemId()) {
             case R.id.workingTimeMenuItem:
                 fragment = SetScheduleFragment.class;
+                break;
+            case R.id.doctorAppointmentsMenuItem:
+                Intent intent=new Intent(this, AppointmentsActivity.class);
+                intent.putExtra("ROLE",StaticFields.DOCTOR_ROLE);
+                startActivity(intent);
                 break;
             case R.id.setReservationsMenuItem:
                 fragment = SetAvailabilityFragment.class;

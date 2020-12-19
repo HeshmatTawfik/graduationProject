@@ -9,7 +9,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -24,33 +23,22 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.login.LoginManager;
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.heshmat.doctoreta.DatabaseInstance;
 import com.heshmat.doctoreta.MainActivity;
 import com.heshmat.doctoreta.R;
-import com.heshmat.doctoreta.activities.LoginActivity;
 import com.heshmat.doctoreta.models.Doctor;
 import com.heshmat.doctoreta.models.Patient;
 import com.heshmat.doctoreta.models.StaticFields;
 import com.heshmat.doctoreta.models.User;
 import com.heshmat.doctoreta.utils.CircleTransform;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import static com.heshmat.doctoreta.activities.LoginActivity.gso;
 
 public class HomeActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
@@ -151,6 +139,11 @@ public class HomeActivity extends AppCompatActivity implements
         switch (item.getItemId()) {
             case R.id.searchMenuItem:
                 fragment = SearchDoctorFragment.class;
+                break;
+            case R.id.AppointmentMenuItem:
+                Intent intent=new Intent(HomeActivity.this, AppointmentsActivity.class);
+                intent.putExtra("ROLE",StaticFields.PATIENT_ROLE);
+                startActivity(intent);
                 break;
 
 

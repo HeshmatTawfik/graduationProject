@@ -9,6 +9,10 @@
         android:id="@+id/searchMenuItem"
         android:icon="@drawable/ic_search"
         android:title="@string/search" />
+        <item
+            android:id="@+id/AppointmentMenuItem"
+            android:icon="@drawable/ic_calendar"
+            android:title="@string/my_appointment" />
     </group>
     <item android:title="">
         <menu>

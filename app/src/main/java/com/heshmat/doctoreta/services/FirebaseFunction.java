@@ -16,11 +16,11 @@ import androidx.annotation.NonNull;
 import timber.log.Timber;
 
 public class FirebaseFunction {
-
-    public static Task<HashMap<String,Object>> sendPayemnt(Map<String,Object> map) {
+   // stripeChargeCall
+    public static Task<HashMap<String,Object>> callFirebaseFunction(String functionName, Map<String,Object> map) {
         FirebaseFunctions functions = FirebaseFunctions.getInstance();
         return functions
-                .getHttpsCallable("stripeChargeCall")
+                .getHttpsCallable(functionName)
                 .call(map)
                 .continueWith(new Continuation<HttpsCallableResult, HashMap<String, Object>>() {
                     @Override
@@ -35,4 +35,5 @@ public class FirebaseFunction {
                     }
                 });
     }
+
 }
