@@ -367,6 +367,10 @@ public class SearchDoctorFragment extends Fragment {
                     .whereLessThan("price", 3000.0).orderBy("price", DESCENDING).limit(15);
             DoctorListLiveData.query = query;     */
             //     doctorListLiveData = doctorListViewModel.getDoctorListLiveData(query);
+            if (doctorList != null) {
+                doctorList.clear();
+                doctorIDs.clear();
+            }
             structFilterQuery(cityFiledWasChosen ? citydata : city, gender, speciality, fee);
 
         }
@@ -374,12 +378,12 @@ public class SearchDoctorFragment extends Fragment {
 
     @Override
     public void onResume() {
-        if (view == null) {
-            if (doctorList != null) {
+    //   if (view == null) {
+         /*   if (doctorList != null) {
                 doctorList.clear();
                 doctorIDs.clear();
-            }
-        }
+            }*/
+     //   }
         super.onResume();
     }
 
@@ -406,6 +410,7 @@ public class SearchDoctorFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+
     }
 
     @Override

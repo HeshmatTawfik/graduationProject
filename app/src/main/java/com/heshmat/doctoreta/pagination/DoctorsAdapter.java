@@ -12,8 +12,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.heshmat.doctoreta.DatabaseInstance;
+import com.heshmat.doctoreta.DoctorProfileFragment;
 import com.heshmat.doctoreta.R;
 import com.heshmat.doctoreta.models.Doctor;
+import com.heshmat.doctoreta.models.TimeSlot;
 import com.heshmat.doctoreta.patientui.HomeActivity;
 import com.heshmat.doctoreta.patientui.ReservationFragment;
 import com.heshmat.doctoreta.patientui.SearchDoctorFragment;
@@ -34,9 +36,9 @@ public class DoctorsAdapter extends RecyclerView.Adapter<DoctorsAdapter.DoctorVi
     private List<Doctor> doctorList;
     Context context;
 
-   public DoctorsAdapter(List<Doctor> doctorList,Context context) {
+    public DoctorsAdapter(List<Doctor> doctorList, Context context) {
         this.doctorList = doctorList;
-        this.context=context;
+        this.context = context;
     }
 
     @NonNull
@@ -57,14 +59,15 @@ public class DoctorsAdapter extends RecyclerView.Adapter<DoctorsAdapter.DoctorVi
         return doctorList.size();
     }
 
-    class DoctorViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class DoctorViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CircularImageView profileImg;
 
-        TextView doctorNameCardTv,doctorCardSpecialityTv,doctorCardLocationTv,doctorCardFeesTv,available;
+        TextView doctorNameCardTv, doctorCardSpecialityTv, doctorCardLocationTv, doctorCardFeesTv, available;
+
         DoctorViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            profileImg=itemView.findViewById(R.id.doctorCardIv);
+            profileImg = itemView.findViewById(R.id.doctorCardIv);
             doctorNameCardTv = itemView.findViewById(R.id.doctorNameCardTv);
             doctorCardSpecialityTv = itemView.findViewById(R.id.doctorCardSpecialityTv);
             doctorCardLocationTv = itemView.findViewById(R.id.doctorCardLocationTv);
@@ -78,50 +81,57 @@ public class DoctorsAdapter extends RecyclerView.Adapter<DoctorsAdapter.DoctorVi
             doctorCardSpecialityTv.setText(doctor.getSpeciality());
             doctorCardLocationTv.setText(doctor.getAddressInfo().getAddress());
             doctorCardFeesTv.setText(String.valueOf(doctor.getPrice()));
-          Glide.with(context).load(doctor.getPhotoURL()).into(profileImg);
+            Glide.with(context).load(doctor.getPhotoURL()).into(profileImg);
 
-            DatabaseInstance.getInstance().collection("reservations").document(doctor.getId()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+          /*  DatabaseInstance.getInstance().collection("reservations").document(doctor.getId()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                     if (value != null && value.exists() && value.contains("dates")) {
-                            try{
+                        try {
 
-                        HashMap<String, HashMap<String, String>> doctorSchedule = (HashMap<String, HashMap<String, String>>) value.get("dates");
-                        if (doctorSchedule != null) {
-                            String t=avaiableTime(doctorSchedule);
-                            if (!t.equals("")){
-                                available.setVisibility(View.VISIBLE);
-                                available.setText("Available "+t);
+                            HashMap<String, HashMap<String, String>> doctorSchedule = (HashMap<String, HashMap<String, String>>) value.get("dates");
+                            if (doctorSchedule != null) {
+                                String t = avaiableTime(doctorSchedule);
+                                if (!t.equals("")) {
+                                    available.setVisibility(View.VISIBLE);
+                                    available.setText("Available " + t);
+                                }
+
                             }
+                        } catch (Exception ex) {
 
                         }
-                    }
-                    catch (Exception ex){
-
-                    }
 
                     }
 
                 }
             });
+*/
 
         }
 
         @Override
         public void onClick(View v) {
-            Doctor doctor=doctorList.get(getAdapterPosition());
+            Doctor doctor = doctorList.get(getAdapterPosition());
             HomeActivity activity = (HomeActivity) context;
+            Doctor.setDoctorBeingViewed(doctor);
             activity.getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                    .replace(R.id.fragmentContainer, DoctorProfileFragment.newInstance()).addToBackStack(DoctorProfileFragment.class.getName())
+                    .commit();
+           /* activity.getSupportFragmentManager().beginTransaction()
                     .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                     .replace(R.id.fragmentContainer, ReservationFragment.newInstance(doctor.getId(),doctor.getName()
                             ,doctor.getEmail(),doctor.getPrice(),doctor.getSpeciality()
                     )).addToBackStack(ReservationFragment.class.getName())
-                    .commit();
+                    .commit();*/
 
         }
     }
+
     private String avaiableTime(HashMap<String, HashMap<String, String>> doctorSchedule) {
-           Calendar dateNow = Calendar.getInstance();
+        TimeSlot.timeSlots(doctorSchedule);
+        Calendar dateNow = Calendar.getInstance();
         Calendar reser = Calendar.getInstance();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat hourFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
@@ -142,7 +152,7 @@ public class DoctorsAdapter extends RecyclerView.Adapter<DoctorsAdapter.DoctorVi
                     }
 
                 } else if (reser.get(Calendar.DAY_OF_MONTH) == dateNow.get(Calendar.DAY_OF_MONTH) + 1 && reser.get(Calendar.MONTH) == dateNow.get(Calendar.MONTH)) {
-                    if (doctorSchedule.get(s)==null)
+                    if (doctorSchedule.get(s) == null)
                         return "";
 
                     return context.getString(R.string.tomorrow);
@@ -153,6 +163,7 @@ public class DoctorsAdapter extends RecyclerView.Adapter<DoctorsAdapter.DoctorVi
 
             }
         }
+
 
         return "";
     }

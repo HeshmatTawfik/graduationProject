@@ -23,4 +23,5 @@ public class StaticFields {
     public static final String RESERVATION_STATUS_WAITING = "waiting";
 
 
+    public static final String RESERVATION_STATUS_TERMINATED = "terminated";
 }

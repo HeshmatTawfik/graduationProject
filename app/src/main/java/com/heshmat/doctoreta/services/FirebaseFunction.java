@@ -30,6 +30,7 @@ public class FirebaseFunction {
                             return result;
                         }
                         catch (Exception e) {
+                            String ex=e.getMessage();
                             return null;
                         }
                     }

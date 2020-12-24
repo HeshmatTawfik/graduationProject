@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ff0056</color>
-    <color name="colorAccent">#ff0056</color>
-    <color name="secondColorAccent">#2C98F0</color>
+    <color name="colorPrimary">#4672eb</color>
+    <color name="colorAccent">#4672eb</color>
+    <color name="secondColorAccent">#f65791</color>
+  <!--  <color name="secondColorAccent">#2C98F0</color>-->
     <color name="white">#FFFFFF</color>
     <color name="black">#000</color>
 
-    <color name="secondcolorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#ff0056</color>
+    <color name="secondcolorPrimary">#4672eb</color>
+    <color name="colorPrimaryDark">#4672eb</color>
 
     <color name="colorPrimaryDarksec">#3700B3</color>
     <color name="disable_foreground_grey">#42221f1f</color>

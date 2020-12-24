@@ -29,6 +29,7 @@ import com.heshmat.doctoreta.models.User;
 import com.heshmat.doctoreta.services.FirebaseFunction;
 import com.heshmat.doctoreta.utils.RequestPermissions;
 import com.stripe.android.ApiResultCallback;
+import com.stripe.android.PaymentAuthConfig;
 import com.stripe.android.Stripe;
 import com.stripe.android.model.Card;
 import com.stripe.android.model.Source;
@@ -90,6 +91,8 @@ public class PaymentActivity extends AppCompatActivity {
         if (RequestPermissions.requestLocationPermission(this)) {// check for location permission
             card = multilineWidget.getCard();
             if (card != null) { //check card info
+
+
                 final LoadingDialog loadingDialog = new LoadingDialog(this);
                 loadingDialog.startLoadingDialog();
                 final SourceParams cardSourceParams = SourceParams.createCardParams(card)
@@ -115,6 +118,7 @@ public class PaymentActivity extends AppCompatActivity {
                                         @Override
                                         public void onSuccess(HashMap<String, Object> stringObjectHashMap) {
                                             loadingDialog.dismissDialog();
+                                            if (stringObjectHashMap!=null)
                                             for (String key : stringObjectHashMap.keySet()) {
                                                 if (Objects.equals(stringObjectHashMap.get(key), "SUCCESSFUL")) {
                                                     changeSlotStatus(StaticFields.RESERVED);
@@ -209,8 +213,8 @@ public class PaymentActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     Intent intent=new Intent(PaymentActivity.this, AppointmentsActivity.class);
-                                    startActivity(intent);
                                     intent.putExtra("ROLE",StaticFields.PATIENT_ROLE);
+                                    startActivity(intent);
                                     finish();
                                 }
                             }).show();

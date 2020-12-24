@@ -2,6 +2,8 @@ package com.heshmat.doctoreta.models;
 
 import com.google.firebase.firestore.Exclude;
 
+import java.util.Calendar;
+
 import androidx.annotation.Nullable;
 
 public class Reservation {
@@ -55,5 +57,12 @@ public class Reservation {
 
         return obj != null && ((Reservation) obj).getReservationId().equals(this.getReservationId());
     }
-
+    @Exclude
+    public static boolean hasMeetingStarted (Calendar now, Calendar[] timeArr){
+        return (now.equals(timeArr[0])||(now.after(timeArr[0])&&now.before(timeArr[1])));
+    }
+    @Exclude
+    public static boolean hasMeetingFinished (Calendar now, Calendar endTime){
+        return (now.after(endTime));
+    }
 }

@@ -2,6 +2,8 @@ package com.heshmat.doctoreta.models;
 
 import com.google.firebase.firestore.Exclude;
 
+import java.util.Calendar;
+
 import androidx.annotation.Nullable;
 
 public class PatientReservation extends Reservation {
@@ -115,4 +117,5 @@ public class PatientReservation extends Reservation {
 
         return obj != null && ((PatientReservation) obj).getReservationId().equals(this.getReservationId());
     }
+
 }

@@ -71,7 +71,13 @@ public class RequestPermissions {
                         Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.INTERNET,
                         Manifest.permission.ACCESS_NETWORK_STATE,
-                        Manifest.permission.ACCESS_WIFI_STATE)
+                        Manifest.permission.ACCESS_WIFI_STATE,
+                        Manifest.permission.ACCESS_NETWORK_STATE,
+                        Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.RECORD_AUDIO,
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.MODIFY_AUDIO_SETTINGS,
+                        Manifest.permission.BLUETOOTH)
                 .withListener(
                         new MultiplePermissionsListener() {
                             @Override

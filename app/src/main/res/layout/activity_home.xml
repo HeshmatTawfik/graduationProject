@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".patientui.HomeActivity"
+    android:background="#FFF"
     android:id="@+id/drawer"
     >
 

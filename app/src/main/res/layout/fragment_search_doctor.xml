@@ -6,31 +6,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".patientui.SearchDoctorFragment">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <Button
+
+        <androidx.recyclerview.widget.RecyclerView
+
+            android:id="@+id/doctors_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/openFilterBt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@color/white"
-
-        android:drawableStart="@drawable/ic_filter_list"
-        android:foregroundGravity="center"
-        android:gravity="center"
-        android:text="Filter"
-        android:textColor="@color/secondColorAccent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-
-        android:id="@+id/doctors_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-</LinearLayout>
+        android:layout_gravity="bottom|end"
+        android:layout_margin="15dp"
+        android:clickable="true"
+        android:src="@drawable/ic_filter_list"
+        app:backgroundTint="@color/colorPrimary"
+        android:focusable="true"
+        />
 
 </FrameLayout>

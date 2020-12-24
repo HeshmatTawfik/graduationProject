@@ -5,7 +5,7 @@ import com.google.firebase.firestore.Exclude;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Doctor  extends User{
+public class Doctor extends User {
     private String idCardUrl;
     private String medicalLicenseUrl;
     private String bio;
@@ -16,7 +16,7 @@ public class Doctor  extends User{
     private String status;
     private double price;
     private HashMap<String, ArrayList<String>> availability;
-
+    private static Doctor doctorBeingViewed;
 
 
     public String getIdCardUrl() {
@@ -116,7 +116,29 @@ public class Doctor  extends User{
         this.status = status;
         this.price = price;
     }
+
     @Exclude
-    public String generateBio(){
-        return String.format("Doctor %s is a %s specialist ", this.getName(), this.getSpeciality());}
+    public String generateBio() {
+        return String.format("Doctor %s is a %s specialist ", this.getName(), this.getSpeciality());
+    }
+
+    public Doctor(String id, String name, String phoneNumber, String email, String bio, String speciality, AddressInfo addressInfo, double price, HashMap<String, ArrayList<String>> availability) {
+        super(id, name, phoneNumber, email);
+        this.bio = bio;
+        this.speciality = speciality;
+        this.addressInfo = addressInfo;
+        this.price = price;
+        this.availability = availability;
+    }
+
+    public static void setDoctorBeingViewed(String id, String name, String email, String phone, String speciality, String bio, double price, AddressInfo addressInfo, HashMap<String, ArrayList<String>> availability) {
+        doctorBeingViewed = new Doctor(id, name, phone, email, bio, speciality, addressInfo, price, availability);
+    }
+    public static void  setDoctorBeingViewed(Doctor doctor) {
+        doctorBeingViewed = doctor;
+       // return doctorBeingViewed;
+    }
+    public static Doctor getDoctorBeingViewed(){
+        return doctorBeingViewed;
+    }
 }
