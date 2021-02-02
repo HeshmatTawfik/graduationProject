@@ -1,8 +1,8 @@
-# graduationProject (TeleLikar )
+# TeleLikar
 An android app where doctors and clients can connect
 - Easy registration using Facebook or Google accounts
 - Search doctors
-- Filter results based on geo location
+- Filter results based on geolocation
 - Online booking
 - Notifications 
 - Payment online 
